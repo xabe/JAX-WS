@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="registroWS" targetNamespace="http://ws.arquitectura.xabe.es/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.arquitectura.xabe.es/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://ws.arquitectura.xabe.es/" xmlns:tns="http://ws.arquitectura.xabe.es/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="getestado" type="tns:getestado"/>
+<xs:element name="getestadoResponse" type="tns:getestadoResponse"/>
+<xs:element name="getestados" type="tns:getestados"/>
+<xs:element name="getestadosResponse" type="tns:getestadosResponse"/>
+<xs:complexType name="getestados">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="getestadosResponse">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="acta">
+<xs:sequence>
+<xs:element minOccurs="0" name="nombre" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getestado">
+<xs:sequence>
+<xs:element minOccurs="0" name="tipo" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getestadoResponse">
+<xs:sequence/>
+</xs:complexType>
+<xs:element name="actas" nillable="true" type="tns:acta"/>
+<xs:element name="acta" nillable="true" type="tns:acta"/>
+</xs:schema>
+    <xs:schema targetNamespace="acta" version="1.0" xmlns:ns1="http://ws.arquitectura.xabe.es/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:import namespace="http://ws.arquitectura.xabe.es/"/>
+<xs:element name="acta" type="ns1:acta"/>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getestado">
+    <wsdl:part name="parameters" element="tns:getestado">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getestadoResponse">
+    <wsdl:part name="result" element="tns:getestadoResponse">
+    </wsdl:part>
+    <wsdl:part name="acta" element="tns:acta">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getestadosResponse">
+    <wsdl:part name="result" element="tns:getestadosResponse">
+    </wsdl:part>
+    <wsdl:part name="actas" element="tns:actas">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getestados">
+    <wsdl:part name="parameters" element="tns:getestados">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="RegistroWS">
+    <wsdl:operation name="getestados">
+      <wsdl:input name="getestados" message="tns:getestados">
+    </wsdl:input>
+      <wsdl:output name="getestadosResponse" message="tns:getestadosResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getestado">
+      <wsdl:input name="getestado" message="tns:getestado">
+    </wsdl:input>
+      <wsdl:output name="getestadoResponse" message="tns:getestadoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="registroWSSoapBinding" type="tns:RegistroWS">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getestados">
+      <soap:operation soapAction="getestados" style="document"/>
+      <wsdl:input name="getestados">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getestadosResponse">
+        <soap:header message="tns:getestadosResponse" part="actas" use="literal">
+        </soap:header>
+        <soap:body parts="result" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getestado">
+      <soap:operation soapAction="getestado" style="document"/>
+      <wsdl:input name="getestado">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getestadoResponse">
+        <soap:header message="tns:getestadoResponse" part="acta" use="literal">
+        </soap:header>
+        <soap:body parts="result" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="registroWS">
+    <wsdl:port name="RegistroWSImplPort" binding="tns:registroWSSoapBinding">
+      <soap:address location="http://localhost:8080/JbossAxisServer/registroWS"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
